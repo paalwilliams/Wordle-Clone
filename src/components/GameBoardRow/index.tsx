@@ -1,4 +1,5 @@
 import { Grid, Typography } from "@mui/material";
+import { v4 as uuid } from 'uuid'
 
 interface IGameBoardRowProps {
     guess?: string,
@@ -28,7 +29,7 @@ const GameBoardRow = (props: IGameBoardRowProps) => {
             let answerArr = answer.split('');
             let guessArr = guess.split('');
 
-            if (answerArr[index] === guessArr[index]) {
+            if (answerArr[index].toLowerCase() === guessArr[index].toLowerCase()) {
                 styles.backgroundColor = "green"
             } else if (answerArr.indexOf(guessArr[index]) >= 0) {
                 styles.backgroundColor = "orange"
@@ -41,27 +42,13 @@ const GameBoardRow = (props: IGameBoardRowProps) => {
 
     return (
         <>
-            <Grid item xs={12 / 7} sx={genResultStyles(0)}>
-                {guess ? <Typography>{guess[0].toUpperCase()}</Typography> : <Typography />}
-            </Grid>
-            <Grid item xs={12 / 7} sx={genResultStyles(1)}>
-                {guess ? <Typography>{guess[1].toUpperCase()}</Typography> : <Typography />}
-            </Grid>
-            <Grid item xs={12 / 7} sx={genResultStyles(2)}>
-                {guess ? <Typography>{guess[2].toUpperCase()}</Typography> : <Typography />}
-            </Grid>
-            <Grid item xs={12 / 7} sx={genResultStyles(3)}>
-                {guess ? <Typography>{guess[3].toUpperCase()}</Typography> : <Typography />}
-            </Grid>
-            <Grid item xs={12 / 7} sx={genResultStyles(4)}>
-                {guess ? <Typography>{guess[4].toUpperCase()}</Typography> : <Typography />}
-            </Grid>
-            <Grid item xs={12 / 7} sx={genResultStyles(5)}>
-                {guess ? <Typography>{guess[5].toUpperCase()}</Typography> : <Typography />}
-            </Grid>
-            <Grid item xs={12 / 7} sx={genResultStyles(6)}>
-                {guess ? <Typography>{guess[6].toUpperCase()}</Typography> : <Typography />}
-            </Grid>
+            {answer.split('').map((_: string, index: number) => {
+                return (
+                    <Grid item xs={12 / answer.length} sx={genResultStyles(index)} key={uuid()}>
+                        {guess ? <Typography key={uuid()}>{guess[index].toUpperCase()}</Typography> : <Typography />}
+                    </Grid>
+                )
+            })}
         </>
     );
 };

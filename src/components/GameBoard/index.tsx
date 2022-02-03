@@ -13,7 +13,7 @@ const GameBoard = (props: IGameBoardProps) => {
         container: {
             minWidth: "300px",
             width: "30%",
-            border: "1px solid white",
+            maxWidth: "450px",
             margin: "0 auto",
             marginTop: "50px"
         },
@@ -24,12 +24,9 @@ const GameBoard = (props: IGameBoardProps) => {
     }
     return (
         <Grid container spacing={1} style={gridStyles.container}>
-            <GameBoardRow answer={answer} guess={guesses[0]} />
-            <GameBoardRow answer={answer} guess={guesses[1]} />
-            <GameBoardRow answer={answer} guess={guesses[2]} />
-            <GameBoardRow answer={answer} guess={guesses[3]} />
-            <GameBoardRow answer={answer} guess={guesses[4]} />
-
+            {answer.split('').map((_: string, index: number) => {
+                return <GameBoardRow answer={answer} guess={guesses[index]} />
+            })}
         </Grid>);
 };
 

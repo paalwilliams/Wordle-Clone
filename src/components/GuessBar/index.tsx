@@ -1,13 +1,21 @@
-import { Button, Grid, TextField, Typography } from "@mui/material";
-import { ReactHTMLElement, useState } from 'react';
+import { Box, Button, Grid, TextField } from "@mui/material";
+import { useState, useRef } from 'react';
+import Keyboard from "../Keyboard";
+import { v4 as uuid } from 'uuid'
+import WordleNotifbar from "../WordleNotifBar";
+import Loading from "../Utils/Loading";
 
 interface IGuessGridProps {
-    addGuess: Function
+    addGuess: Function,
+    guesses: any,
+    answer: any
 }
 const GuessGrid = (props: IGuessGridProps) => {
 
-    const { addGuess } = props;
+    const { addGuess, guesses, answer } = props;
+    const [notif, setNotif] = useState<boolean>(false);
 
+    const gridContainerRef = useRef<HTMLDivElement>(null);
     const initialState = {
         "0": "",
         "1": "",
@@ -32,10 +40,22 @@ const GuessGrid = (props: IGuessGridProps) => {
         container: {
             minWidth: "300px",
             width: "30%",
-            border: "1px solid white",
+            maxWidth: "450px",
             margin: "0 auto",
             marginTop: "50px",
         },
+        box: {
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "",
+            minWidth: "300px",
+            width: "30%",
+            maxWidth: "450px",
+            margin: "0 auto",
+            marginTop: "50px",
+
+        }
 
     }
 
@@ -51,10 +71,19 @@ const GuessGrid = (props: IGuessGridProps) => {
 
     const handleChange = (e: any) => {
         e.preventDefault();
+        // if (gridContainerRef.current) {
+        //     // console.log(gridContainerRef.current.children[1].children[0])
+        // }
         setGuess({
             ...guess,
             [e.target.name]: e.target.value
         })
+    }
+
+    const handleKeyClick = (e: any) => {
+        e.preventDefault();
+        console.log(e.target.lastChild.data)
+
     }
 
     const handleSubmit = () => {
@@ -62,39 +91,36 @@ const GuessGrid = (props: IGuessGridProps) => {
         Object.entries(guess).forEach((x: any) => {
             word += x[1];
         })
-        if (word.length === 7) {
+        if (word.length === answer.length) {
             addGuess(word)
             setGuess(initialState);
         }
+        else {
+            setNotif(true);
+            setTimeout(() => {
+                setNotif(false);
+            }, 1000)
+        }
     }
-    return <>
-        <Grid container sx={styles.container}>
-            <Grid item xs={12 / 7} sx={styles.input}>
-                <TextField value={guess[0].toUpperCase()} onChange={handleChange} InputProps={genInputProps("0")} inputProps={{ maxLength: 1 }} />
+    if (answer) {
+        return <>
+            <Grid container sx={styles.container} ref={gridContainerRef}>
+                {answer ? answer.split('').map((_: string, index: number) => {
+
+                    return (<Grid item xs={12 / answer.length} sx={styles.input} key={uuid()}>
+                        <TextField value={guess[index].toUpperCase()} onChange={handleChange} InputProps={genInputProps(index.toString())} inputProps={{ maxLength: 1 }} key={uuid()} />
+                    </Grid>)
+                }) : ""}
             </Grid>
-            <Grid item xs={12 / 7} sx={styles.input}>
-                <TextField value={guess[1].toUpperCase()} onChange={handleChange} InputProps={genInputProps("1")} inputProps={{ maxLength: 1 }} />
-            </Grid>
-            <Grid item xs={12 / 7} sx={styles.input}>
-                <TextField value={guess[2].toUpperCase()} onChange={handleChange} InputProps={genInputProps("2")} inputProps={{ maxLength: 1 }} />
-            </Grid>
-            <Grid item xs={12 / 7} sx={styles.input}>
-                <TextField value={guess[3].toUpperCase()} onChange={handleChange} InputProps={genInputProps("3")} inputProps={{ maxLength: 1 }} />
-            </Grid>
-            <Grid item xs={12 / 7} sx={styles.input}>
-                <TextField value={guess[4].toUpperCase()} onChange={handleChange} InputProps={genInputProps("4")} inputProps={{ maxLength: 1 }} />
-            </Grid>
-            <Grid item xs={12 / 7} sx={styles.input}>
-                <TextField value={guess[5].toUpperCase()} onChange={handleChange} InputProps={genInputProps("5")} inputProps={{ maxLength: 1 }} />
-            </Grid>
-            <Grid item xs={12 / 7} sx={styles.input}>
-                <TextField value={guess[6].toUpperCase()} onChange={handleChange} InputProps={genInputProps("6")} inputProps={{ maxLength: 1 }} />
-            </Grid>
-            <Grid item xs={12} sx={styles.input}>
-                <Button onClick={handleSubmit}>Submit Your Guess</Button>
-            </Grid>
-        </Grid>
-    </>;
+            <Box sx={styles.box}>
+                <Button onClick={handleSubmit} variant={"contained"}>Submit Your Guess</Button>
+            </Box>
+            <Keyboard guesses={guesses} answer={answer} handleKeyClick={handleKeyClick} />
+            {notif ? <WordleNotifbar message="Not Enough Characters" duration={1000} /> : ""}
+        </>;
+    } else {
+        return <Loading />
+    }
 };
 
 export default GuessGrid;

@@ -9,7 +9,8 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: "80%",
+    maxWidth: "400px",
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -18,13 +19,27 @@ const style = {
 
 interface IResultsModalProps {
     open: boolean,
-    result: any
+    result: any,
+    guesses: number,
+    answer: string,
 
 }
 const ResultsModal = (props: IResultsModalProps) => {
-    const { open, result } = props;
+    const { open, result, guesses, answer } = props;
     const handleReload = () => {
         window.location.reload();
+    }
+
+    const genClipboardMessage = () => {
+        return `${answer.length} letter wordle, ${guesses}/${answer.length} guesses \n${result.resultsSquare}`
+    }
+
+    const handleShare = () => {
+        navigator.clipboard.writeText(genClipboardMessage()).then(function () {
+        }, function () {
+
+
+        });
     }
     return (
         <div>
@@ -40,7 +55,9 @@ const ResultsModal = (props: IResultsModalProps) => {
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                         {result.message}
                     </Typography>
+                    <Box sx={{ display: "flex", justifyContent: "space-between" }}></Box>
                     <Button onClick={handleReload}>Play Again</Button>
+                    <Button onClick={handleShare}>Copy Result Grid</Button>
                 </Box>
             </Modal>
         </div>

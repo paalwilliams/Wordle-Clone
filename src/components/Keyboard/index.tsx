@@ -4,10 +4,11 @@ import { v4 as uuid } from 'uuid';
 
 interface IKeyboardProps {
     guesses: string[],
-    answer: string
+    answer: string,
+    handleKeyClick: any
 }
 const Keyboard = (props: IKeyboardProps) => {
-    const { guesses, answer } = props
+    const { guesses, answer, handleKeyClick } = props
 
     const [guessedLetters, setGuessedLetters] = useState<any>();
     const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('')
@@ -24,7 +25,8 @@ const Keyboard = (props: IKeyboardProps) => {
         keyboard: {
             width: "80%",
             margin: "0 auto",
-            marginTop: "50px"
+            marginTop: "50px",
+            justifyContent: "center"
         }
     }
 
@@ -41,6 +43,8 @@ const Keyboard = (props: IKeyboardProps) => {
 
             if (answer.indexOf(character) >= 0 && guessedLetters.indexOf(character) >= 0) {
                 styles.backgroundColor = "green"
+            } else if (answer.indexOf(character) < 0 && guessedLetters.indexOf(character) >= 0) {
+                styles.color = "#777"
             }
             return styles
         }
@@ -50,7 +54,7 @@ const Keyboard = (props: IKeyboardProps) => {
         {alphabet.map((letter: string, index) => {
             return (
                 <>
-                    <Grid item sx={genKeyStyles(letter, index)} key={uuid()}>
+                    <Grid item sx={genKeyStyles(letter, index)} key={uuid()} onClick={handleKeyClick}>
                         <Typography key={uuid()}>{letter}</Typography>
                     </Grid>
                 </>
