@@ -29,13 +29,16 @@ const GameContainer = () => {
 
     const addGuess = (guess: string) => {
         setGuesses([...guesses, guess])
-        if (guesses.length + 1 === 5 || guesses.length === 5) {
+    }
+
+    useEffect(() => {
+        if (guesses.length === 5) {
             setResult({
                 open: true,
                 message: buildResultsMessage()
             })
         }
-    }
+    }, [guesses])
 
     const genRandomIndex = (wordList: string[]) => {
         const n = Math.floor(Math.random() * wordList.length);

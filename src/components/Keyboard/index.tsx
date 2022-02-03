@@ -22,7 +22,7 @@ const Keyboard = (props: IKeyboardProps) => {
 
     const styles = {
         keyboard: {
-            width: "500px",
+            width: "80%",
             margin: "0 auto",
             marginTop: "50px"
         }

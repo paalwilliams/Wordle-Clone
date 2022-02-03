@@ -11,7 +11,7 @@ const GameBoard = (props: IGameBoardProps) => {
     const { guesses, answer } = props;
     const gridStyles = {
         container: {
-            minWidth: "400px",
+            minWidth: "300px",
             width: "30%",
             border: "1px solid white",
             margin: "0 auto",

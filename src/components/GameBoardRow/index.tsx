@@ -14,12 +14,13 @@ const GameBoardRow = (props: IGameBoardRowProps) => {
         const styles = {
             border: "1px solid white",
             color: "white",
-            height: "75px",
-            width: "75px",
+            height: "50px",
+            width: "20px",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor: ""
+            backgroundColor: "",
+            padding: 0
         }
 
         if (guess) {

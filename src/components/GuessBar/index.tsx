@@ -22,7 +22,7 @@ const GuessGrid = (props: IGuessGridProps) => {
     const styles = {
         input: {
             border: "1px solid white",
-            height: "75px",
+            height: "50px",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -30,7 +30,7 @@ const GuessGrid = (props: IGuessGridProps) => {
             color: "white",
         },
         container: {
-            minWidth: "400px",
+            minWidth: "300px",
             width: "30%",
             border: "1px solid white",
             margin: "0 auto",
