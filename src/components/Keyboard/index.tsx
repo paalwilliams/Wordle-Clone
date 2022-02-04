@@ -1,17 +1,21 @@
 import { Box, Grid, Typography } from "@mui/material";
 import { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
+import BackspaceIcon from '@mui/icons-material/Backspace';
 
 interface IKeyboardProps {
     guesses: string[],
     answer: string,
-    handleKeyClick: any
+    handleKeyClick: any,
+    submitFunc: any
 }
 const Keyboard = (props: IKeyboardProps) => {
-    const { guesses, answer, handleKeyClick } = props
+    const { guesses, answer, handleKeyClick, submitFunc } = props
 
     const [guessedLetters, setGuessedLetters] = useState<any>();
-    const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('')
+    const topRow = 'qwertyuiop'.split('');
+    const middleRow = 'asdfghjkl'.split('');
+    const bottomRow = 'zxcvbnm'.split('');
 
     useEffect(() => {
 
@@ -21,47 +25,74 @@ const Keyboard = (props: IKeyboardProps) => {
 
     }, [guesses])
 
-    const styles = {
-        keyboard: {
-            width: "80%",
-            margin: "0 auto",
-            marginTop: "50px",
-            justifyContent: "center"
-        }
-    }
-
     const genKeyStyles = (character: string, index: number) => {
         if (guessedLetters) {
 
             const styles = {
-                border: "1px solid white",
-                width: "50px",
-                color: "white",
+                width: character === "bs" || character === "enter" ? "65px" : "35px",
+                marginX: "1px",
+                marginY: "1px",
+                borderRadius: "5px",
+                height: "50px",
+                color: "black",
                 textAlign: "center",
-                backgroundColor: ""
+                backgroundColor: "#DDD",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center"
             };
 
             if (answer.indexOf(character) >= 0 && guessedLetters.indexOf(character) >= 0) {
                 styles.backgroundColor = "green"
             } else if (answer.indexOf(character) < 0 && guessedLetters.indexOf(character) >= 0) {
-                styles.color = "#777"
+                styles.backgroundColor = "#777"
             }
             return styles
         }
     }
 
-    return <Grid container sx={styles.keyboard}>
-        {alphabet.map((letter: string, index) => {
-            return (
-                <>
-                    <Grid item sx={genKeyStyles(letter, index)} key={uuid()} onClick={handleKeyClick}>
-                        <Typography key={uuid()}>{letter}</Typography>
-                    </Grid>
-                </>
-            )
+    return <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center", margin: "0 auto", marginTop: "50px" }}>
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+            {topRow.map((letter: string, index: any) => {
+                return (
+                    <>
+                        <Box sx={genKeyStyles(letter, index)} key={uuid()} onClick={handleKeyClick}>
+                            <Typography key={uuid()}>{letter}</Typography>
+                        </Box>
+                    </>
+                )
+            })}
+        </Box>
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+            {middleRow.map((letter: string, index: any) => {
+                return (
+                    <>
+                        <Box sx={genKeyStyles(letter, index)} key={uuid()} onClick={handleKeyClick}>
+                            <Typography key={uuid()}>{letter}</Typography>
+                        </Box>
+                    </>
+                )
+            })}
+        </Box>
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Box sx={genKeyStyles("enter", 1)} key={uuid()} onClick={submitFunc}>
+                <Typography key={uuid()}>enter</Typography>
+            </Box>
 
-        })}
-    </Grid>;
+            {bottomRow.map((letter: string, index: any) => {
+                return (
+                    <>
+                        <Box sx={genKeyStyles(letter, index)} key={uuid()} onClick={handleKeyClick}>
+                            <Typography key={uuid()}>{letter}</Typography>
+                        </Box>
+                    </>
+                )
+            })}
+            <Box sx={genKeyStyles("bs", 1)} key={uuid()} onClick={handleKeyClick}>
+                <Typography key={uuid()}><BackspaceIcon /></Typography>
+            </Box>
+        </Box>
+    </Box>
 };
 
 export default Keyboard;

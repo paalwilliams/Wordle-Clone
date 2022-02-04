@@ -23,7 +23,7 @@ const GameBoard = (props: IGameBoardProps) => {
         }
     }
     return (
-        <Grid container spacing={1} style={gridStyles.container}>
+        <Grid container spacing={0} style={gridStyles.container}>
             {answer.split('').map((_: string, index: number) => {
                 return <GameBoardRow answer={answer} guess={guesses[index]} />
             })}

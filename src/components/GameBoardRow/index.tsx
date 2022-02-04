@@ -21,7 +21,6 @@ const GameBoardRow = (props: IGameBoardRowProps) => {
             justifyContent: "center",
             alignItems: "center",
             backgroundColor: "",
-            padding: 0
         }
 
         if (guess) {

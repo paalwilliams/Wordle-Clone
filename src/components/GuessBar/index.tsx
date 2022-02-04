@@ -112,10 +112,7 @@ const GuessGrid = (props: IGuessGridProps) => {
                     </Grid>)
                 }) : ""}
             </Grid>
-            <Box sx={styles.box}>
-                <Button onClick={handleSubmit} variant={"contained"}>Submit Your Guess</Button>
-            </Box>
-            <Keyboard guesses={guesses} answer={answer} handleKeyClick={handleKeyClick} />
+            <Keyboard guesses={guesses} answer={answer} handleKeyClick={handleKeyClick} submitFunc={handleSubmit} />
             {notif ? <WordleNotifbar message="Not Enough Characters" duration={1000} /> : ""}
         </>;
     } else {
