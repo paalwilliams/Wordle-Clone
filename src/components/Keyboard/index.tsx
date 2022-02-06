@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, SxProps, Theme, Typography } from "@mui/material";
 import { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import BackspaceIcon from '@mui/icons-material/Backspace';
@@ -14,9 +14,9 @@ const Keyboard = (props: IKeyboardProps) => {
     const { guesses, answer, handleKeyClick, submitFunc, handleBackspace } = props
 
     const [guessedLetters, setGuessedLetters] = useState<string[]>();
-    const topRow = 'qwertyuiop'.split('');
-    const middleRow = 'asdfghjkl'.split('');
-    const bottomRow = 'zxcvbnm'.split('');
+    const topRow = 'qwertyuiop'.toUpperCase().split('');
+    const middleRow = 'asdfghjkl'.toUpperCase().split('');
+    const bottomRow = 'zxcvbnm'.toUpperCase().split('');
 
     useEffect(() => {
 
@@ -26,33 +26,33 @@ const Keyboard = (props: IKeyboardProps) => {
 
     }, [guesses])
 
-    const genKeyStyles = (character: string, _: number) => {
+    const genKeyStyles = (character: string, _: number): SxProps<Theme> => {
+        character = character.toLowerCase()
+
+        const styles = {
+            width: character === "bs" || character === "enter" ? "65px" : "35px",
+            marginX: "1px",
+            marginY: "1px",
+            borderRadius: "5px",
+            height: "50px",
+            color: "black",
+            textAlign: "center",
+            backgroundColor: "#DDD",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+        };
         if (guessedLetters) {
-
-            const styles = {
-                width: character === "bs" || character === "enter" ? "65px" : "35px",
-                marginX: "1px",
-                marginY: "1px",
-                borderRadius: "5px",
-                height: "50px",
-                color: "black",
-                textAlign: "center",
-                backgroundColor: "#DDD",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center"
-            };
-
             if (answer.indexOf(character) >= 0 && guessedLetters.indexOf(character) >= 0) {
                 styles.backgroundColor = "green"
             } else if (answer.indexOf(character) < 0 && guessedLetters.indexOf(character) >= 0) {
                 styles.backgroundColor = "#777"
             }
-            return styles
         }
+        return styles
     }
 
-    return <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center", margin: "0 auto", marginTop: "50px" }}>
+    return <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center", marginTop: "10px", }}>
         <Box sx={{ display: "flex", justifyContent: "center" }}>
             {topRow.map((letter: string, index: any) => {
                 return (

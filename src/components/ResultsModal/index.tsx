@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import WordleNotifbar from "../WordleNotifBar";
 
 const style = {
     position: 'absolute',
@@ -25,22 +26,27 @@ interface IResultsModalProps {
 
 }
 const ResultsModal = (props: IResultsModalProps) => {
+
+    const [copyConfirm, setCopyConfirm] = useState<boolean>(false)
     const { open, result, guesses, answer } = props;
-    const handleReload = () => {
+    const handleReload = (): void => {
         window.location.reload();
     }
 
-    const genClipboardMessage = () => {
+    const genClipboardMessage = (): string => {
         return `${answer.length} letter wordle, ${guesses}/${answer.length} guesses \n${result.resultsSquare}`
     }
 
-    const handleShare = () => {
+    const handleShare = (): void => {
         navigator.clipboard.writeText(genClipboardMessage()).then(function () {
+            setCopyConfirm(true);
+            setTimeout(() => {
+                setCopyConfirm(false);
+            }, 1000)
         }, function () {
-
-
         });
     }
+
     return (
         <div>
             <Modal
@@ -60,6 +66,7 @@ const ResultsModal = (props: IResultsModalProps) => {
                     <Button onClick={handleShare}>Copy Result Grid</Button>
                 </Box>
             </Modal>
+            {copyConfirm ? <WordleNotifbar message={"Results Copied To Clipboard"} duration={1000} /> : <></>}
         </div>
     )
 };

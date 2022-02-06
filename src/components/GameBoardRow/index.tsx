@@ -1,10 +1,6 @@
 import { Grid, Typography } from "@mui/material";
 import { v4 as uuid } from 'uuid'
-
-interface IGameBoardRowProps {
-    guess?: string,
-    answer: string
-}
+import { IGameBoardRowProps } from "../../types";
 
 const GameBoardRow = (props: IGameBoardRowProps) => {
 
@@ -13,10 +9,11 @@ const GameBoardRow = (props: IGameBoardRowProps) => {
     const genResultStyles = (index: number) => {
 
         const styles = {
-            border: "1px solid white",
             color: "white",
             height: "50px",
             width: "20px",
+            borderRadius: "5px",
+            border: ".5px solid white",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -27,10 +24,6 @@ const GameBoardRow = (props: IGameBoardRowProps) => {
 
             let answerArr = answer.split('');
             let guessArr = guess.split('');
-            console.log(answerArr)
-            console.log(guessArr[index])
-            console.log(answerArr.indexOf(guessArr[index]))
-
             if (answerArr[index] === guessArr[index]) {
                 styles.backgroundColor = "green"
             } else if (answerArr.indexOf(guessArr[index]) >= 0) {

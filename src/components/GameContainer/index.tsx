@@ -1,12 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { isGetAccessorDeclaration } from "typescript";
+import { IResultsState } from "../../types";
 import GameBoard from "../GameBoard";
 import GuessBar from "../GuessBar";
-import Keyboard from "../Keyboard";
 import wordList from '../lib/wordList.json';
 import ResultsModal from "../ResultsModal";
 import { genResultSquare } from "../Utils/genResultSquare";
-import { getDailyWord, setDailyWord } from "../Utils/localStorage";
 const GameContainer = () => {
 
     const initialResultState = {
@@ -18,9 +16,9 @@ const GameContainer = () => {
     const [guesses, setGuesses] = useState<string[]>([]);
     const [answer, setAnswer] = useState<string>("");
 
-    const [result, setResult] = useState<any>(initialResultState);
+    const [result, setResult] = useState<IResultsState>(initialResultState);
 
-    const buildResultsMessage = () => {
+    const buildResultsMessage = (): string => {
         let status = "You lost!"
         let numGuesses = guesses.length;
         if (guesses.includes(answer)) {
@@ -56,8 +54,8 @@ const GameContainer = () => {
     }, [guesses, answer, buildResultsMessageCB])
 
     const genRandomIndex = (wordList: string[]) => {
-        const n = Math.floor(Math.random() * wordList.length);
-        return n
+        const n: number = Math.floor(Math.random() * wordList.length);
+        return n;
     }
 
     useEffect(() => {

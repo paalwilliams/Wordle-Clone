@@ -1,9 +1,10 @@
 import { Box, Grid, Typography } from "@mui/material";
-import { useState, useRef, useEffect, ChangeEvent } from 'react';
+import { useState, useRef, useEffect, ChangeEvent, HtmlHTMLAttributes } from 'react';
 import Keyboard from "../Keyboard";
 import { v4 as uuid } from 'uuid'
 import WordleNotifbar from "../WordleNotifBar";
 import Loading from "../Utils/Loading";
+import { IGuessState } from "../../types";
 
 interface IGuessGridProps {
     addGuess: Function,
@@ -16,7 +17,6 @@ const GuessGrid = (props: IGuessGridProps) => {
     let [notif, setNotif] = useState<boolean>(false);
     let [refIndex, setRefIndex] = useState(0);
 
-    const textInputRefs = useRef<HTMLInputElement[]>([])
     const initialState = {
         "0": "",
         "1": "",
@@ -32,12 +32,13 @@ const GuessGrid = (props: IGuessGridProps) => {
     }, [])
 
 
-    const [guess, setGuess] = useState<any>(initialState);
+    const [guess, setGuess] = useState<IGuessState>(initialState);
     const styles = {
         input: {
-            border: "1px solid white",
+            border: ".5px solid white",
             height: "50px",
             display: "flex",
+            borderRadius: "5px",
             justifyContent: "center",
             alignItems: "center",
             backgroundColor: "",
@@ -48,7 +49,7 @@ const GuessGrid = (props: IGuessGridProps) => {
             width: "30%",
             maxWidth: "450px",
             margin: "0 auto",
-            marginTop: "50px",
+            marginTop: "30px",
         },
         box: {
             display: "flex",
@@ -59,36 +60,12 @@ const GuessGrid = (props: IGuessGridProps) => {
             width: "30%",
             maxWidth: "450px",
             margin: "0 auto",
-            marginTop: "50px",
-
-        }
-
-    }
-
-    const genInputProps = (name: string) => {
-        return {
-            style: {
-                color: "white"
-            },
-            maxLength: 1,
-            name,
+            marginTop: "20px",
         }
     }
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        e.preventDefault();
+    const handleVirtualKeyClick = (e: any): void => {
 
-        setGuess({
-            ...guess,
-            // [e.target.name]: textInputRefs[e.target.name]?.current?.value
-        })
-    }
-
-    useEffect(() => {
-        textInputRefs?.current[refIndex]?.focus();
-    }, [refIndex])
-
-    const handleVirtualKeyClick = (e: any) => {
         e.preventDefault();
         if (refIndex === answer.length) {
             return;
@@ -101,16 +78,7 @@ const GuessGrid = (props: IGuessGridProps) => {
         setRefIndex(newRefIndex);
     }
 
-    // const handleKeyEvent = (e: any) => {
-    //     let alphabet = 'abcdefghiujklmnopqrstuvwxyz'.split('');
-    //     if (alphabet.includes(e.key)) {
-    //         guess[refIndex] = e.key
-    //         let newRefIndex = refIndex + 1;
-    //         setRefIndex(newRefIndex);
-    //     }
-    // }
-
-    const handleBackspace = (e: any) => {
+    const handleBackspace = (e: MouseEvent): void => {
         e.preventDefault();
         if (refIndex > 0) {
             setGuess({
@@ -123,8 +91,7 @@ const GuessGrid = (props: IGuessGridProps) => {
 
     }
 
-
-    const handleSubmit = () => {
+    const handleSubmit = (): void => {
         let word = ""
         Object.entries(guess).forEach((x: any) => {
             word += x[1];

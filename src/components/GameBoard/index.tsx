@@ -1,11 +1,8 @@
 import { Grid } from "@mui/material";
 import GameBoardRow from "../GameBoardRow";
 import { v4 as uuid } from 'uuid';
+import { IGameBoardProps } from "../../types";
 
-interface IGameBoardProps {
-    guesses: string[];
-    answer: string
-}
 const GameBoard = (props: IGameBoardProps) => {
 
     const { guesses, answer } = props;
@@ -15,7 +12,7 @@ const GameBoard = (props: IGameBoardProps) => {
             width: "30%",
             maxWidth: "450px",
             margin: "0 auto",
-            marginTop: "50px"
+            marginTop: "20px"
         },
         item: {
             border: "1px solid white",
