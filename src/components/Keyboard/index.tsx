@@ -7,12 +7,13 @@ interface IKeyboardProps {
     guesses: string[],
     answer: string,
     handleKeyClick: any,
-    submitFunc: any
+    submitFunc: any,
+    handleBackspace: any
 }
 const Keyboard = (props: IKeyboardProps) => {
-    const { guesses, answer, handleKeyClick, submitFunc } = props
+    const { guesses, answer, handleKeyClick, submitFunc, handleBackspace } = props
 
-    const [guessedLetters, setGuessedLetters] = useState<any>();
+    const [guessedLetters, setGuessedLetters] = useState<string[]>();
     const topRow = 'qwertyuiop'.split('');
     const middleRow = 'asdfghjkl'.split('');
     const bottomRow = 'zxcvbnm'.split('');
@@ -25,7 +26,7 @@ const Keyboard = (props: IKeyboardProps) => {
 
     }, [guesses])
 
-    const genKeyStyles = (character: string, index: number) => {
+    const genKeyStyles = (character: string, _: number) => {
         if (guessedLetters) {
 
             const styles = {
@@ -88,7 +89,7 @@ const Keyboard = (props: IKeyboardProps) => {
                     </>
                 )
             })}
-            <Box sx={genKeyStyles("bs", 1)} key={uuid()} onClick={handleKeyClick}>
+            <Box sx={genKeyStyles("bs", 1)} key={uuid()} onClick={handleBackspace}>
                 <Typography key={uuid()}><BackspaceIcon /></Typography>
             </Box>
         </Box>

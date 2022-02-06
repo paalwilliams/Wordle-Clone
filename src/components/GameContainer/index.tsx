@@ -23,7 +23,7 @@ const GameContainer = () => {
     const buildResultsMessage = () => {
         let status = "You lost!"
         let numGuesses = guesses.length;
-        if (guesses.includes(answer.toLowerCase())) {
+        if (guesses.includes(answer)) {
             status = "You won!"
         }
         return `${status} You used ${numGuesses} guess${numGuesses !== 1 ? "es" : ""}. The correct word was ${answer.toUpperCase()}`
@@ -32,12 +32,12 @@ const GameContainer = () => {
     const buildResultsMessageCB = useCallback(buildResultsMessage, [guesses, answer])
 
     const addGuess = (guess: string) => {
-        setGuesses([...guesses, guess.toLowerCase()])
+        setGuesses([...guesses, guess])
     }
 
     useEffect(() => {
         if (guesses.length) {
-            if (guesses[guesses.length - 1].toLowerCase() === answer.toLowerCase()) {
+            if (guesses[guesses.length - 1] === answer) {
                 setResult({
                     open: true,
                     message: buildResultsMessageCB(),
@@ -61,8 +61,8 @@ const GameContainer = () => {
     }
 
     useEffect(() => {
-        let answer = wordList.wordList[genRandomIndex(wordList.wordList)];
-        setAnswer(answer)
+        let answer: string = wordList.wordList[genRandomIndex(wordList.wordList)];
+        setAnswer(answer.toLowerCase())
     }, [])
 
 

@@ -27,8 +27,11 @@ const GameBoardRow = (props: IGameBoardRowProps) => {
 
             let answerArr = answer.split('');
             let guessArr = guess.split('');
+            console.log(answerArr)
+            console.log(guessArr[index])
+            console.log(answerArr.indexOf(guessArr[index]))
 
-            if (answerArr[index].toLowerCase() === guessArr[index].toLowerCase()) {
+            if (answerArr[index] === guessArr[index]) {
                 styles.backgroundColor = "green"
             } else if (answerArr.indexOf(guessArr[index]) >= 0) {
                 styles.backgroundColor = "orange"

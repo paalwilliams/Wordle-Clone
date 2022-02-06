@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
-import React from 'react';
 import GameBoardRow from "../GameBoardRow";
+import { v4 as uuid } from 'uuid';
 
 interface IGameBoardProps {
     guesses: string[];
@@ -25,7 +25,7 @@ const GameBoard = (props: IGameBoardProps) => {
     return (
         <Grid container spacing={0} style={gridStyles.container}>
             {answer.split('').map((_: string, index: number) => {
-                return <GameBoardRow answer={answer} guess={guesses[index]} />
+                return <GameBoardRow answer={answer} guess={guesses[index]} key={uuid()} />
             })}
         </Grid>);
 };

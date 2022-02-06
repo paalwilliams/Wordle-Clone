@@ -1,5 +1,5 @@
-import { Box, Button, Grid, TextField } from "@mui/material";
-import { useState, useRef } from 'react';
+import { Box, Grid, Typography } from "@mui/material";
+import { useState, useRef, useEffect, ChangeEvent } from 'react';
 import Keyboard from "../Keyboard";
 import { v4 as uuid } from 'uuid'
 import WordleNotifbar from "../WordleNotifBar";
@@ -13,9 +13,10 @@ interface IGuessGridProps {
 const GuessGrid = (props: IGuessGridProps) => {
 
     const { addGuess, guesses, answer } = props;
-    const [notif, setNotif] = useState<boolean>(false);
+    let [notif, setNotif] = useState<boolean>(false);
+    let [refIndex, setRefIndex] = useState(0);
 
-    const gridContainerRef = useRef<HTMLDivElement>(null);
+    const textInputRefs = useRef<HTMLInputElement[]>([])
     const initialState = {
         "0": "",
         "1": "",
@@ -25,6 +26,11 @@ const GuessGrid = (props: IGuessGridProps) => {
         "5": "",
         "6": "",
     }
+
+    useEffect(() => {
+        // window.addEventListener('keydown', handleKeyEvent)
+    }, [])
+
 
     const [guess, setGuess] = useState<any>(initialState);
     const styles = {
@@ -69,22 +75,54 @@ const GuessGrid = (props: IGuessGridProps) => {
         }
     }
 
-    const handleChange = (e: any) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
-        // if (gridContainerRef.current) {
-        //     // console.log(gridContainerRef.current.children[1].children[0])
-        // }
+
         setGuess({
             ...guess,
-            [e.target.name]: e.target.value
+            // [e.target.name]: textInputRefs[e.target.name]?.current?.value
         })
     }
 
-    const handleKeyClick = (e: any) => {
+    useEffect(() => {
+        textInputRefs?.current[refIndex]?.focus();
+    }, [refIndex])
+
+    const handleVirtualKeyClick = (e: any) => {
         e.preventDefault();
-        console.log(e.target.lastChild.data)
+        if (refIndex === answer.length) {
+            return;
+        }
+        setGuess({
+            ...guess,
+            [refIndex]: e.target.textContent.toUpperCase()
+        })
+        let newRefIndex = refIndex + 1;
+        setRefIndex(newRefIndex);
+    }
+
+    // const handleKeyEvent = (e: any) => {
+    //     let alphabet = 'abcdefghiujklmnopqrstuvwxyz'.split('');
+    //     if (alphabet.includes(e.key)) {
+    //         guess[refIndex] = e.key
+    //         let newRefIndex = refIndex + 1;
+    //         setRefIndex(newRefIndex);
+    //     }
+    // }
+
+    const handleBackspace = (e: any) => {
+        e.preventDefault();
+        if (refIndex > 0) {
+            setGuess({
+                ...guess,
+                [refIndex - 1]: ""
+            })
+            let newRefIndex = refIndex - 1;
+            setRefIndex(newRefIndex);
+        }
 
     }
+
 
     const handleSubmit = () => {
         let word = ""
@@ -92,8 +130,9 @@ const GuessGrid = (props: IGuessGridProps) => {
             word += x[1];
         })
         if (word.length === answer.length) {
-            addGuess(word)
+            addGuess(word.toLowerCase())
             setGuess(initialState);
+            setRefIndex(0)
         }
         else {
             setNotif(true);
@@ -104,15 +143,18 @@ const GuessGrid = (props: IGuessGridProps) => {
     }
     if (answer) {
         return <>
-            <Grid container sx={styles.container} ref={gridContainerRef}>
-                {answer ? answer.split('').map((_: string, index: number) => {
-
+            <Grid container sx={styles.container} >
+                {answer.split('').map((_: string, index: number) => {
                     return (<Grid item xs={12 / answer.length} sx={styles.input} key={uuid()}>
-                        <TextField value={guess[index].toUpperCase()} onChange={handleChange} InputProps={genInputProps(index.toString())} inputProps={{ maxLength: 1 }} key={uuid()} />
+                        <Box>
+                            <Typography>
+                                {guess[index]}
+                            </Typography>
+                        </Box>
                     </Grid>)
-                }) : ""}
+                })}
             </Grid>
-            <Keyboard guesses={guesses} answer={answer} handleKeyClick={handleKeyClick} submitFunc={handleSubmit} />
+            <Keyboard guesses={guesses} answer={answer} handleKeyClick={handleVirtualKeyClick} handleBackspace={handleBackspace} submitFunc={handleSubmit} />
             {notif ? <WordleNotifbar message="Not Enough Characters" duration={1000} /> : ""}
         </>;
     } else {
