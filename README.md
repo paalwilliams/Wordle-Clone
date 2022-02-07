@@ -7,6 +7,8 @@ Built with Typescript, React, and [MUI](https://mui.com/) Components.
 
 Bootstrapped with [Create React App](https://create-react-app.dev/) - See below for relevant scripts
 
+[Click Here](https://seven-letter-wordle.netlify.app/) for the live demo. Hosted for free on [Netlify](https://www.netlify.com/)
+
 
 ---  
 
