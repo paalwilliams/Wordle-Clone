@@ -1,6 +1,6 @@
 # Wordle Clone
 
-A clone of the popular Wordle Game that is replayable more than once per day!
+A clone of the popular Wordle Game, replayable more than once per day!
 
 Built with Typescript, React, and [MUI](https://mui.com/) Components.
 
