@@ -10,9 +10,8 @@ const GameBoardRow = (props: IGameBoardRowProps) => {
 
         const styles = {
             color: "white",
-            height: "50px",
-            width: "20px",
-            borderRadius: "5px",
+            height: `${320 / answer.length}px`,
+            width: `${320 / answer.length}px`,
             border: ".5px solid white",
             display: "flex",
             justifyContent: "center",
@@ -39,9 +38,10 @@ const GameBoardRow = (props: IGameBoardRowProps) => {
         <>
             {answer.split('').map((_: string, index: number) => {
                 return (
-                    <Grid item xs={12 / answer.length} sx={genResultStyles(index)} key={uuid()}>
-                        {guess ? <Typography key={uuid()}>{guess[index].toUpperCase()}</Typography> : <Typography />}
-                    </Grid>
+                    <Grid item xs={1} sx={genResultStyles(index)} key={uuid()} >
+                        {guess ? <Typography key={uuid()} sx={{ fontWeight: "bold", fontSize: "24px" }}>{guess[index].toUpperCase()}</Typography> : <Typography />
+                        }
+                    </Grid >
                 )
             })}
         </>

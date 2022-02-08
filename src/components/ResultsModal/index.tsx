@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import WordleNotifbar from "../WordleNotifBar";
 import { IResultsModalProps } from "../../types";
+import { enablePlayAgain } from "../Utils/localStorage";
 
 const style = {
     position: 'absolute',
@@ -56,8 +57,8 @@ const ResultsModal = (props: IResultsModalProps) => {
                         {result.message}
                     </Typography>
                     <Box sx={{ display: "flex", justifyContent: "space-between" }}></Box>
-                    <Button onClick={handleReload}>Play Again</Button>
-                    <Button onClick={handleShare}>Copy Result Grid</Button>
+                    <Button onClick={enablePlayAgain}>Play again</Button>
+                    {result.resultsSquare !== "" ? <Button onClick={handleShare}>Copy Result Grid</Button> : <></>}
                 </Box>
             </Modal>
             {copyConfirm ? <WordleNotifbar message={"Results Copied To Clipboard"} duration={1000} /> : <></>}

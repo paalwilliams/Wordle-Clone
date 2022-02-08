@@ -1,5 +1,6 @@
 import { Box, Button, FormControlLabel, FormGroup, Modal, Switch, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import { getSettingsFromLocalStorage, storeSettingsInLocalStorage } from "../Utils/localStorage";
 
 interface ISettingsModalProps {
     isOpen: boolean,
@@ -24,23 +25,17 @@ const SettingsModal = (props: ISettingsModalProps) => {
         p: 4,
     };
 
-    const storeSettingsInLocalStorage = () => {
-        localStorage.setItem('wordleCloneSettings', JSON.stringify(settings))
-    }
-
-    const getSettingsFromLocalStorage = () => {
-        const retrievedSettings = localStorage.getItem('wordleCloneSettings');
-        let parsedSettings: any;
-        if (retrievedSettings) {
-            parsedSettings = JSON.parse(retrievedSettings);
-            if (parsedSettings) {
-                setSettings(parsedSettings)
-            }
-        }
-    }
 
     useEffect(() => {
-        getSettingsFromLocalStorage()
+        let settings = getSettingsFromLocalStorage();
+        if (!settings) {
+            setSettings({
+                hardMode: false,
+                dailyWordChallenge: false
+            })
+            return;
+        }
+        setSettings(settings);
     }, [])
 
     const handleToggleChange = (e: any) => {
@@ -51,7 +46,7 @@ const SettingsModal = (props: ISettingsModalProps) => {
     }
 
     const handleModalClose = () => {
-        storeSettingsInLocalStorage()
+        storeSettingsInLocalStorage(settings)
         window.location.reload()
     }
 

@@ -8,9 +8,7 @@ const GameBoard = (props: IGameBoardProps) => {
     const { guesses, answer } = props;
     const gridStyles = {
         container: {
-            minWidth: "300px",
-            width: "30%",
-            maxWidth: "450px",
+            maxWidth: "320px",
             margin: "0 auto",
             marginTop: "10px",
             marginBottom: "20px"
@@ -21,7 +19,7 @@ const GameBoard = (props: IGameBoardProps) => {
         }
     }
     return (
-        <Grid container spacing={0} style={gridStyles.container}>
+        <Grid container columns={answer.length} spacing={0} style={gridStyles.container}>
             {answer.split('').map((_: string, index: number) => {
                 return <GameBoardRow answer={answer} guess={guesses[index]} key={uuid()} />
             })}

@@ -7,13 +7,14 @@ import wordList from '../lib/wordList.json';
 import ResultsModal from "../ResultsModal";
 import SettingsModal from "../SettingsModal";
 import { genResultSquare } from "../Utils/genResultSquare";
+import { setDailyWordIndex } from "../Utils/localStorage";
 import { getWordListBasedOnDifficulty, getWordOfDayIndex } from "../Utils/wordOfDay";
 const GameContainer = () => {
 
     const initialResultState = {
         open: false,
         message: "You won!",
-        resultsSquare: ""
+        resultsSquare: "",
     }
 
     const [guesses, setGuesses] = useState<string[]>([]);
@@ -39,20 +40,13 @@ const GameContainer = () => {
 
     useEffect(() => {
         if (guesses.length) {
-            if (guesses[guesses.length - 1] === answer) {
+            if (guesses[guesses.length - 1] === answer || guesses.length === answer.length) {
                 setResult({
                     open: true,
                     message: buildResultsMessageCB(),
                     resultsSquare: genResultSquare(guesses, answer)
                 })
                 return;
-            }
-            if (guesses.length === answer.length) {
-                setResult({
-                    open: true,
-                    message: buildResultsMessageCB(),
-                    resultsSquare: genResultSquare(guesses, answer)
-                })
             }
         }
     }, [guesses, answer, buildResultsMessageCB])
@@ -81,6 +75,14 @@ const GameContainer = () => {
             let difficulty = getWordListBasedOnDifficulty(settings.hardMode);
             if (settings.dailyWordChallenge) {
                 index = getWordOfDayIndex();
+                if (index === settings.dailyWordIndex) {
+                    setResult({
+                        open: true,
+                        message: "You've already played today, try again tomorrow for a new word.",
+                        resultsSquare: ""
+                    })
+                }
+                setDailyWordIndex(index)
             }
             else {
                 index = genRandomIndex((wordList as any)[difficulty])

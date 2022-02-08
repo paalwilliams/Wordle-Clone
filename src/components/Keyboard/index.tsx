@@ -38,7 +38,7 @@ const Keyboard = (props: IKeyboardProps) => {
     const genKeyStyles = (character: string, _: number): SxProps<Theme> => {
         character = character.toLowerCase()
         const styles = {
-            width: character === "bs" || character === "enter" ? "63px" : "33px",
+            width: character === "bs" || character === "enter" ? "61px" : "31px",
             marginX: "1px",
             marginY: "1px",
             borderRadius: "5px",

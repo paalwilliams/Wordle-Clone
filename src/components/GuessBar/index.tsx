@@ -6,6 +6,7 @@ import WordleNotifbar from "../WordleNotifBar";
 import Loading from "../Utils/Loading";
 import { IGuessGridProps } from "../../types";
 import wordList from '../lib/wordList.json';
+import { flexbox } from "@mui/system";
 
 
 const GuessBar = (props: IGuessGridProps) => {
@@ -25,20 +26,20 @@ const GuessBar = (props: IGuessGridProps) => {
     const styles = {
         input: {
             border: ".5px solid white",
-            height: "50px",
-            display: "flex",
-            borderRadius: "5px",
-            justifyContent: "center",
-            alignItems: "center",
+            height: `${350 / answer.length}px`,
+            width: `${350 / answer.length}px`,
             backgroundColor: "",
-            color: "white",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
         },
         container: {
             minWidth: "300px",
-            width: "30%",
             maxWidth: "450px",
             margin: "0 auto",
-            marginTop: "15px",
+            marginTop: "10px",
+            display: "flex",
+            justifyContent: "center"
         },
     }
 
@@ -73,7 +74,6 @@ const GuessBar = (props: IGuessGridProps) => {
         else {
             addGuess(word.toLowerCase())
             setGuess([]);
-
         }
     }
     if (answer) {
@@ -81,13 +81,14 @@ const GuessBar = (props: IGuessGridProps) => {
             <Divider />
             <Grid container sx={styles.container} >
                 {answer.split('').map((_: string, index: number) => {
-                    return (<Grid item xs={12 / answer.length} sx={styles.input} key={uuid()}>
-                        <Box>
-                            <Typography>
-                                {guess[index]}
-                            </Typography>
-                        </Box>
-                    </Grid>)
+                    return (
+                        <Grid item sx={styles.input} key={uuid()}>
+                            <Box>
+                                <Typography sx={{ fontSize: "24px", color: "white", fontWeight: "bold" }}>
+                                    {guess[index]}
+                                </Typography>
+                            </Box>
+                        </Grid>)
                 })}
             </Grid>
             <Keyboard guesses={guesses} answer={answer} handleKeyClick={handleAddCharacter} handleBackspace={handleBackspace} submitFunc={handleSubmit} />
