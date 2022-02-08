@@ -14,17 +14,17 @@ export const Header = (props: IHeaderProps) => {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static">
-                <Toolbar>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1, textAlign: 'center' }}>
-                        Five To Seven Letter Wordle
-                    </Typography>
-                    <IconButton aria-label="delete" onClick={handleSettingsClick} sx={{ position: "absolute", right: "20px" }}>
-                        <SettingsIcon />
-                    </IconButton>
-                </Toolbar>
-            </AppBar>
-        </Box>
+            {/* <AppBar position="static" sx={{ backgroundColor: "#121212" }}> */}
+            <Toolbar>
+                <Typography variant="h5" component="div" sx={{ flexGrow: 1, textAlign: 'center', color: "white" }}>
+                    Wordle Clone
+                </Typography>
+                <IconButton aria-label="delete" onClick={handleSettingsClick} sx={{ position: "absolute", right: "20px" }}>
+                    <SettingsIcon color="primary" />
+                </IconButton>
+            </Toolbar>
+            {/* </AppBar> */}
+        </Box >
     );
 }
 
