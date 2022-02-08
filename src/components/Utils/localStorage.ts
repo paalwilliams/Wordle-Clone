@@ -1,6 +1,5 @@
 export const setDailyWord = (word: string) => {
     localStorage.setItem('word', word);
-
 }
 
 export const getDailyWord = (): (string | null) => {

@@ -12,7 +12,8 @@ const GameBoard = (props: IGameBoardProps) => {
             width: "30%",
             maxWidth: "450px",
             margin: "0 auto",
-            marginTop: "20px"
+            marginTop: "10px",
+            marginBottom: "20px"
         },
         item: {
             border: "1px solid white",

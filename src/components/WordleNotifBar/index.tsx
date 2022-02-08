@@ -1,19 +1,12 @@
-import { useState, useEffect } from 'react';
-import Button from '@mui/material/Button';
+import { useState } from 'react';
 import Snackbar from '@mui/material/Snackbar';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
+import { IWordleNotifBarProps } from "../../types";
 
-
-interface ISnackbarProps {
-    message: string,
-    duration: number
-}
-const WordleNotifbar = (props: ISnackbarProps) => {
+const WordleNotifbar = (props: IWordleNotifBarProps) => {
     const { message, duration } = props;
     const [open, setOpen] = useState<boolean>(true)
 
-    const handleClose = (event: any, reason: any) => {
+    const handleClose = (_: any, reason: string) => {
         if (reason === 'clickaway') {
             return;
         }
@@ -21,14 +14,14 @@ const WordleNotifbar = (props: ISnackbarProps) => {
     };
 
     return (
-        <div>
+        <>
             <Snackbar
                 open={open}
                 onClose={handleClose}
-                autoHideDuration={1000}
+                autoHideDuration={duration}
                 message={message}
             />
-        </div>
+        </>
     );
 };
 

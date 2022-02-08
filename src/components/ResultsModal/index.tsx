@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import WordleNotifbar from "../WordleNotifBar";
+import { IResultsModalProps } from "../../types";
 
 const style = {
     position: 'absolute',
@@ -18,13 +19,6 @@ const style = {
     p: 4,
 };
 
-interface IResultsModalProps {
-    open: boolean,
-    result: any,
-    guesses: number,
-    answer: string,
-
-}
 const ResultsModal = (props: IResultsModalProps) => {
 
     const [copyConfirm, setCopyConfirm] = useState<boolean>(false)

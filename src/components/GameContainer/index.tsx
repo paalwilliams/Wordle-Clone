@@ -1,10 +1,13 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { IResultsState } from "../../types";
 import GameBoard from "../GameBoard";
 import GuessBar from "../GuessBar";
+import Header from "../Header";
 import wordList from '../lib/wordList.json';
 import ResultsModal from "../ResultsModal";
+import SettingsModal from "../SettingsModal";
 import { genResultSquare } from "../Utils/genResultSquare";
+import { getWordListBasedOnDifficulty, getWordOfDayIndex } from "../Utils/wordOfDay";
 const GameContainer = () => {
 
     const initialResultState = {
@@ -15,6 +18,7 @@ const GameContainer = () => {
 
     const [guesses, setGuesses] = useState<string[]>([]);
     const [answer, setAnswer] = useState<string>("");
+    const [settingsOpen, setSettingsOpen] = useState<boolean>(false)
 
     const [result, setResult] = useState<IResultsState>(initialResultState);
 
@@ -58,16 +62,52 @@ const GameContainer = () => {
         return n;
     }
 
+    const getSettingsFromLocalStorage = () => {
+        const retrievedSettings = localStorage.getItem('wordleCloneSettings');
+        let parsedSettings: any;
+        if (retrievedSettings) {
+            parsedSettings = JSON.parse(retrievedSettings);
+        }
+        if (parsedSettings) {
+            return parsedSettings;
+        }
+    }
+
     useEffect(() => {
-        let answer: string = wordList.wordList[genRandomIndex(wordList.wordList)];
-        setAnswer(answer.toLowerCase())
+        let settings = getSettingsFromLocalStorage()
+        let answer: string;
+        let index: number;
+        if (settings) {
+            let difficulty = getWordListBasedOnDifficulty(settings.hardMode);
+            if (settings.dailyWordChallenge) {
+                index = getWordOfDayIndex();
+            }
+            else {
+                index = genRandomIndex((wordList as any)[difficulty])
+            }
+            answer = (wordList as any)[difficulty][index]
+            setAnswer(answer.toLowerCase())
+        }
+        else {
+            openSettings()
+        }
     }, [])
+
+    const openSettings = () => {
+        setSettingsOpen(true)
+    }
+
+    const closeSettings = () => {
+        setSettingsOpen(false)
+    }
 
 
     return (
         <>
+            <Header handleSettingsClick={openSettings} />
+            <SettingsModal isOpen={settingsOpen} closeSettings={closeSettings} />
             <ResultsModal open={result.open} result={result} guesses={guesses.length} answer={answer} />
-            <GameBoard guesses={guesses} answer={answer} />
+            <GameBoard guesses={guesses} answer={answer} addGuess={addGuess} />
             <GuessBar addGuess={addGuess} guesses={guesses} answer={answer} />
         </>
     );
